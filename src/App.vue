@@ -1,10 +1,7 @@
 <script setup>
-import TodoItem from './components/TodoItem.vue';
+import TodoItem from './components/TodoList.vue';
 </script>
 
 <template>
-  <h1>TODO LIST</h1>
   <TodoItem></TodoItem>
 </template>
-
-
