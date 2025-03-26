@@ -23,3 +23,7 @@ defineProps({
 
 const emit = defineEmits(['remove'])
 </script>
+
+<style scoped>
+
+</style>
