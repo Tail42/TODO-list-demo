@@ -5,8 +5,9 @@
             v-model="todo.completed"
         >
         <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-        <small v-if="todo.dueDate">截止日期: {{ todo.dueDate }}</small>
-        <button @click="emit('remove', 'index')">刪除</button>
+        <small v-if="todo.dueDate">截止日期: {{ todo.dueDate }}</small> 
+        <button @click="emit('edit', index)">修改</button>
+        <button @click="emit('remove', index)" id="delete-button">刪除</button>
     </li>
 </template>
 
@@ -22,7 +23,7 @@ defineProps({
     }
 })
 
-const emit = defineEmits(['remove'])
+const emit = defineEmits(['remove', 'edit'])
 
 const isOverdue = (todo) => {
     if(!todo.dueDate || todo.completed) return false
@@ -50,6 +51,22 @@ const isOverdue = (todo) => {
 .overdue {
   background-color: #ffe6e6; /* 過期時的背景色 */
   color: #d32f2f; /* 過期時的文字顏色 */
+}
+
+#delete-button {
+  padding: 8px 16px;
+  background-color: #b94279;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#delete-button:hover {
+  padding: 8px 16px;
+  background-color: #af2164;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 button {
