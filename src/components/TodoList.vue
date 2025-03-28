@@ -3,6 +3,7 @@
         <h1>Todo List</h1>
         <div class="input-section">
             <input v-model="newTodo" placeholder="輸入待辦事項" @keyup.enter="addTodo">
+            <input v-model="newDueDate" type="date">
             <button @click="addTodo">新增</button>
         </div>
 
@@ -14,19 +15,33 @@
 
 
 <script setup>
-import { compile, ref } from 'vue';
+import { compile, watch, ref } from 'vue';
 import TodoItem from './TodoItem.vue';
 
 const newTodo = ref('')
-const todos = ref([])
+const todos = ref(JSON.parse(localStorage.getItem('todos')) || [])
+
+const newDueDate = ref('')
+
+const saveTodos = () => {
+  localStorage.setItem('todos', JSON.stringify(todos.value))
+}
+
+// 監聽 todos 的變化
+watch(todos, () => {
+  saveTodos()
+}, { deep: true }) // deep: true 確保監聽陣列內物件的變化
 
 const addTodo = () => {
     if (newTodo.value.trim()) {
         todos.value.push({
             text: newTodo.value,
-            completed: false
+            completed: false,
+            dueDate: newDueDate.value || null
         })
         newTodo.value = ''
+        newDueDate.value = ''
+        // saveTodos()
     }
 }
 
