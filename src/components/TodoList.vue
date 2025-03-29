@@ -7,6 +7,10 @@
             <button @click="addTodo">新增</button>
         </div>
 
+        <div>
+          <h2>已完成事項</h2>
+          <h2>未完成事項</h2>
+        </div>
         <ul class="todo-list">
             <TodoItem v-for="(todo, index) in todos" 
             :key="index" :todo="todo" :index="index" 
@@ -14,8 +18,8 @@
             />
         </ul>
     </div>
-  <div v-if="showMenu" class="edit-menu">
-    <div class="menu-content">
+  <div v-if="showMenu" class="menu">
+    <div class="menu-content glass">
       <h2>編輯待辦事項</h2>
       <input v-model="editTodo.text" placeholder="待辦事項名稱">
       <input v-model="editTodo.dueDate" type="date">
@@ -24,8 +28,9 @@
         <button id="delete-button" @click="closeMenu">關閉</button>
       </div>
     </div>
-
-    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <div v-if="errorMessage" class="error-container">
+      <div class="error">{{ errorMessage }}</div>
+    </div>
   </div>
 </template>
 
@@ -41,7 +46,6 @@ const newDueDate = ref('')
 const showMenu = ref(false)
 const editTodo = ref(null)
 const editIndex = ref(null)
-const errorMessage = ref('') // 未來可能會重複利用到的錯誤訊息
 
 const saveTodos = () => {
   localStorage.setItem('todos', JSON.stringify(todos.value))
@@ -79,7 +83,7 @@ const saveEdit = () => {
   showMenu.value = true
   if(editIndex.value !== null && editTodo.value) {  
     if(!editTodo.value.text.trim()) {
-      errorMessage.value = '你倒是填啊...'
+      alert('你倒是填啊...')
       return 
     }
     errorMessage.value = ''
@@ -142,8 +146,37 @@ button:hover {
   background-color: #359c6d;
 }
 
-.error {
-    color: red;
-    margin-bottom: 10px;
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.menu-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.glass {
+  background-color: rgba(255,255,255,.2);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 10px #333;
+}
+
 </style>
